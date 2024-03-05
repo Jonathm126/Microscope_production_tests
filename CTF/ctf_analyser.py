@@ -262,7 +262,7 @@ class CTFAnalyser:
 
             out_frame = np.zeros((3*h, 5*w, 3))
 
-            out_frame[:h, :w, :] = crop_frame_bbox(frame, self.bboxes[10-1], str(10))
+            out_frame[:h, :w] = crop_frame_bbox(frame, self.bboxes[10-1], str(10))
             out_frame[h:2*h, :w] = crop_frame_bbox(frame, self.bboxes[11-1], str(11))
             out_frame[2*h:3 * h, :w] = crop_frame_bbox(frame, self.bboxes[12 - 1], str(12))
             out_frame[:h, w:2*w] = crop_frame_bbox(frame, self.bboxes[9 - 1], str(9))

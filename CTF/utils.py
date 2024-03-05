@@ -63,11 +63,11 @@ def non_max_suppression_fast(boxes, overlapThresh):
 
 def crop_frame_bbox(frame, bbox, text_at_center=None):
     bbox_center = ((bbox[3] - bbox[1]) // 2, (bbox[2] - bbox[0]) // 2)
-    if (bbox[2] <= frame.shape[0] and
-            bbox[0] <= frame.shape[0] and
-            bbox[1] <= frame.shape[1] and
-            bbox[3] <= frame.shape[1]):
-        crop = frame[bbox[1]:bbox[3], bbox[0]:bbox[2], :].copy()
+    if (bbox[2] <= frame.shape[1] and
+            bbox[0] <= frame.shape[1] and
+            bbox[1] <= frame.shape[0] and
+            bbox[3] <= frame.shape[0]):
+        crop = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]].copy()
     else:
         crop = np.zeros((bbox[3] - bbox[1], bbox[2] - bbox[0], 3))
     if text_at_center is not None:

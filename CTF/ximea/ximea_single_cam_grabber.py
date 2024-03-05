@@ -120,7 +120,7 @@ def main(output_folder=r'calibration_data/Tracking_temp/', ctf_analyse=True, rot
         # out_left = FFmpegSave(width, height, path + name_left)
         # out_right = FFmpegSave(width, height, path + name_right)
         cv2.namedWindow('img', cv2.WINDOW_NORMAL)
-        cv2.resizeWindow('img', 1920, 1080)
+        cv2.resizeWindow('img', 2056, 1504)
         print_usage()
 
         i = 1
