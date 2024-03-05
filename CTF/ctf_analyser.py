@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-from CTF.utils import non_max_suppression_fast
+from CTF.utils import crop_frame_bbox, non_max_suppression_fast
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 from scipy.fft import fft
@@ -251,9 +251,41 @@ class CTFAnalyser:
                 fig.savefig(self.pdf_file, format='pdf')
                 fig.clear()
         return ctf, mtf_raw_max, max_mtf_freq
+
+    def get_boxes_zoomed(self, frame, expand=100):
+        if self.bboxes.shape[0] != 15:
+            print('not all targets are visible, aborting zoom')
+            return frame
+
+        h, w = self.template.shape[:2]
+        if np.all(w == np.abs(self.bboxes[:, 0] - self.bboxes[:, 2])) and np.all(h == np.abs(self.bboxes[:, 1] - self.bboxes[:, 3])):
+
+            out_frame = np.zeros((3*h, 5*w, 3))
+
+            out_frame[:h, :w, :] = crop_frame_bbox(frame, self.bboxes[10-1], str(10))
+            out_frame[h:2*h, :w] = crop_frame_bbox(frame, self.bboxes[11-1], str(11))
+            out_frame[2*h:3 * h, :w] = crop_frame_bbox(frame, self.bboxes[12 - 1], str(12))
+            out_frame[:h, w:2*w] = crop_frame_bbox(frame, self.bboxes[9 - 1], str(9))
+            out_frame[h:2 * h, w:2*w] = crop_frame_bbox(frame, self.bboxes[8 - 1], str(8))
+            out_frame[2*h:3 * h, w:2*w] = crop_frame_bbox(frame, self.bboxes[7 - 1], str(7))
+            out_frame[:h, 2*w:3 * w,] = crop_frame_bbox(frame, self.bboxes[2 - 1], str(2))
+            out_frame[h:2 * h, 2*w:3 * w] = crop_frame_bbox(frame, self.bboxes[1 - 1], str(1))
+            out_frame[2*h:3 * h, 2*w:3 * w] = crop_frame_bbox(frame, self.bboxes[6 - 1], str(6))
+            out_frame[:h, 3 * w:4 * w] = crop_frame_bbox(frame, self.bboxes[3 - 1], str(3))
+            out_frame[h:2 * h, 3 * w:4 * w] = crop_frame_bbox(frame, self.bboxes[4 - 1], str(4))
+            out_frame[2*h:3 * h, 3 * w:4 * w] = crop_frame_bbox(frame, self.bboxes[5 - 1], str(5))
+            out_frame[:h, 4 * w:5 * w,] = crop_frame_bbox(frame, self.bboxes[13 - 1], str(13))
+            out_frame[h:2 * h, 4 * w:5 * w] = crop_frame_bbox(frame, self.bboxes[14 - 1], str(14))
+            out_frame[2*h:3 * h, 4 * w:5 * w] = crop_frame_bbox(frame, self.bboxes[15 - 1], str(15))
+            return out_frame
+        else:
+            print('bboxes sizes are not identical')
+            return frame
+
     def export(self, filename):
         pd.DataFrame(self.data).to_csv(filename, index=False)
         print('Data exported to:', filename)
+
     def close(self):
         if self.export_pdf_filename:
             print('PDF report exported to:', self.export_pdf_filename)

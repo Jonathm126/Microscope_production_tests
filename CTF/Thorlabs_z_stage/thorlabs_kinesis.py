@@ -23,9 +23,8 @@ class ThorlabsZStage:
 
 
 if __name__ == '__main__':
-    Thorlabs.list_kinesis_devices()
-    # device_sn = '26001946'
-    device_sn = '26001946'
+    print(Thorlabs.list_kinesis_devices())
+    device_sn = Thorlabs.list_kinesis_devices()[0][0]
     z_stage = ThorlabsZStage(device_sn)
     print(z_stage.get_position())
     print(z_stage.get_velocity())

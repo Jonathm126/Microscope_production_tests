@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
+import cv2
 
 
 def save_multi_image(filename, plt):
@@ -58,3 +59,17 @@ def non_max_suppression_fast(boxes, overlapThresh):
 
     # Return only the bounding boxes that were picked
     return boxes[pick].astype("int")
+
+
+def crop_frame_bbox(frame, bbox, text_at_center=None):
+    bbox_center = ((bbox[3] - bbox[1]) // 2, (bbox[2] - bbox[0]) // 2)
+    if (bbox[2] <= frame.shape[0] and
+            bbox[0] <= frame.shape[0] and
+            bbox[1] <= frame.shape[1] and
+            bbox[3] <= frame.shape[1]):
+        crop = frame[bbox[1]:bbox[3], bbox[0]:bbox[2], :].copy()
+    else:
+        crop = np.zeros((bbox[3] - bbox[1], bbox[2] - bbox[0], 3))
+    if text_at_center is not None:
+        crop = cv2.putText(crop, text_at_center, bbox_center, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+    return crop

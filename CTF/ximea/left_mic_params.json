@@ -1,0 +1,8 @@
+{
+  "device_sn": "XUCAS2309002",
+  "imgdataformat": "XI_RGB24",
+  "exposure": 10000,
+  "gpi_selector": "XI_GPI_PORT1",
+  "gpi_mode": "XI_GPI_TRIGGER",
+  "trigger_source": "XI_TRG_OFF"
+}
