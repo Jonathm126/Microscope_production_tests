@@ -14,10 +14,12 @@ import pandas as pd
 
 class CTFAnalyser:
     def __init__(self, template_path='template/template.bmp', resolution=(4112, 3008), margin=5,
-                 export_pdf_filename=None):
-        self.window = 'CTF_window'
-        cv2.namedWindow(self.window, cv2.WINDOW_NORMAL)
-        cv2.resizeWindow(self.window, 1280, 720)
+                 export_pdf_filename=None, show=True):
+        self.show = show
+        if show:
+            self.window = 'CTF_window'
+            cv2.namedWindow(self.window, cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(self.window, 1280, 720)
         self.template = cv2.imread(template_path)
         self.width, self.height = resolution
         self.bboxes = []
@@ -44,7 +46,10 @@ class CTFAnalyser:
             self.pdf_file = PdfPages(export_pdf_filename)
             self.fig = plt.figure(figsize=(15, 10))
 
-    def detect_targets(self, main_image, show=True, matching_threshold=0.7, nms_threshold=0.3, resize=None):
+    def clear_data(self):
+        self.data = []
+
+    def detect_targets(self, main_image, matching_threshold=0.7, nms_threshold=0.3, resize=None):
         # Load the main image and template
         h, w = self.template.shape[:2]
         # Convert images to grayscale
@@ -100,7 +105,7 @@ class CTFAnalyser:
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
         # Display the result
-        if show:
+        if self.show:
             cv2.imshow(self.window, main_image)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
@@ -318,10 +323,10 @@ if __name__ == "__main__":
         cv2.rotate(main_image, cv2.ROTATE_180, main_image)
         export_pdf_filename = os.path.join(folder, f'{file[:-4]}_report.pdf') if export_pdf else None
         export_csv_filename = os.path.join(folder, f'{file[:-4]}_data.csv') if export_csv else None
-        ctf_analyser = CTFAnalyser(export_pdf_filename=export_pdf_filename)
+        ctf_analyser = CTFAnalyser(export_pdf_filename=export_pdf_filename, show=show)
         t0 = time.time()
 
-        ctf_analyser.detect_targets(main_image, show=show, resize=resize)
+        ctf_analyser.detect_targets(main_image, resize=resize)
         print('Analysis time:', int(1000 * (time.time() - t0)), '[ms]')
         if export_detected:
             cv2.imwrite(os.path.join(folder, f'{file[:-4]}_detected.bmp'), main_image)
