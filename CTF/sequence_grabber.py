@@ -1,15 +1,15 @@
-from ximea.ximea_single_cam_grabber import XimeaSingleCamGrabber
+# from ximea.ximea_single_cam_grabber import XimeaSingleCamGrabber
 import cv2
 import time
 import os
-from ximea.ring_buffer import RingBuffer
+# from ximea.ring_buffer import RingBuffer
 import sys
 import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
 
 sys.path.append("../")
 from CTF.ctf_analyser import CTFAnalyser
-from CTF.Thorlabs_z_stage.thorlabs_kinesis import ThorlabsZStage
+# from CTF.Thorlabs_z_stage.thorlabs_kinesis import ThorlabsZStage
 import json
 import numpy as np
 from argparse import ArgumentParser
@@ -200,6 +200,9 @@ if __name__ == '__main__':
     # Create the root window
     root = tk.Tk()
     root.withdraw()  # We don't want a full GUI, so keep the root window from appearing for now
+
+    # Show opening message box
+    messagebox.showinfo("CTF sequence grabber","Welcome to CTF sequence grabber, Make sure: \n1. target is in focus plain\n2. Iris is set and known. \n3. LED is ON. \nPress OK to continue.")
 
     # Ask for the output folder
     args.output_folder = filedialog.askdirectory(title="Select Output Folder")
