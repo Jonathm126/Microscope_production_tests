@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 from ximea import xiapi
 import cv2
 import time
@@ -16,7 +18,7 @@ class XimeaStereoGrabber:
             imgs[cam_key] = xiapi.Image()
 
             # Open device
-            print('Opening', cam_key, 'ximea camera: ', devices_sn[cam_key])
+            print('Opening', cam_key, 'ximea_grabber camera: ', devices_sn[cam_key])
             # cams[cam_key].open_device()
             cams[cam_key].open_device_by_SN(devices_sn[cam_key])
 

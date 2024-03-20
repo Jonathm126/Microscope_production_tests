@@ -76,11 +76,13 @@ class ThorlabsZStage:
 def main():
     """The main entry point for the application"""
     stage = ThorlabsZStage()
-    stage.move_to(0)
-    stage.move_to(0, rel=True)
+    # stage.move_to(0)
+    # stage.move_to(2, rel=True)
+    stage.move_to(-2, rel=True)
     stage.move_to(1, rel=True)
     stage.move_to(1, rel=True)
-    stage.move_to(1, rel=True)
+    stage.move_to(-1, rel=True)
+    stage.move_to(-1, rel=True)
     print(stage.device.Position)
 
 

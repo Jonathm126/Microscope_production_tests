@@ -96,7 +96,7 @@ class CTFAnalyser:
                 cv2.putText(main_image, key, (x1, y1),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 255, 255), 1)
                 # ctf, _, _ = self.calculate_and_visualize_ctf(main_image_gray, [x1, y1, x2, y2], show=False)
-                ctf, mtf, mtf_max_f = self.calculate_and_visualize_mtf(main_image_gray_raw, [x1, y1, x2, y2], key[-1], show=show,
+                ctf, mtf, mtf_max_f = self.calculate_and_visualize_mtf(main_image_gray_raw, [x1, y1, x2, y2], key[-1],
                                                             text=f'target: {i + 1}, {key}')
                 curr_data = {'target': i + 1, 'subbox': key, 'ctf': ctf, 'mtf': mtf, 'mtf_max_f': mtf_max_f}
                 self.data.append(curr_data)
@@ -216,8 +216,8 @@ class CTFAnalyser:
         mtf_normalized = mtf / np.max(mtf)
 
         # Visualize MTF if show is True
-        if show:
-            if export_pdf_filename is None:
+        if self.show:
+            if self.export_pdf_filename is None:
                 fig = plt.figure(figsize=(15, 10))
             else:
                 fig = self.fig

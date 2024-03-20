@@ -2,10 +2,11 @@ from ximea import xiapi
 import cv2
 import time
 import os
-from ring_buffer import RingBuffer
 import sys
-sys.path.append("../")
-sys.path.append("../../")
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+from ring_buffer import RingBuffer
 from CTF.ctf_analyser import CTFAnalyser
 import json
 
@@ -19,7 +20,7 @@ class XimeaSingleCamGrabber:
         img = xiapi.Image()
 
         # Open device
-        print('Opening Single camera: ximea camera: ', params['device_sn'])
+        print('Opening Single camera: ximea_grabber camera: ', params['device_sn'])
         cam.open_device_by_SN(params['device_sn'])
         del params['device_sn']
 
@@ -114,7 +115,7 @@ def main(output_folder=r'calibration_data/Tracking_temp/', ctf_analyse=True, rot
     zoom = False
     if ctf_analyse:
         # ctf_analyser = CTFAnalyser()
-        ctf_analyser = CTFAnalyser(template_path="../../CTF/template/template.bmp")
+        ctf_analyser = CTFAnalyser(template_path="../../CTF/template/template.bmp", show=False)
 
     with XimeaSingleCamGrabber(params) as ximea_grabber:
         # out_left = FFmpegSave(width, height, path + name_left)
@@ -132,7 +133,7 @@ def main(output_folder=r'calibration_data/Tracking_temp/', ctf_analyse=True, rot
                 if len(frame.shape) == 2:
                     frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
                 # detect targets
-                ctf_analyser.detect_targets(frame, show=False, matching_threshold=0.7, nms_threshold=0.3, resize=0.25)
+                ctf_analyser.detect_targets(frame, matching_threshold=0.7, nms_threshold=0.3, resize=0.25)
                 if zoom:
                     frame_zoom = ctf_analyser.get_boxes_zoomed(frame, expand=100)
             if zoom:

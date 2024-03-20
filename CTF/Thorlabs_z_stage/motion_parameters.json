@@ -1,6 +1,6 @@
 {
   "min": -2,
   "max": 2,
-  "step": 0.5,
-  "freeze_time_sec": 1
+  "step": 1,
+  "freeze_time_sec": 2
 }
