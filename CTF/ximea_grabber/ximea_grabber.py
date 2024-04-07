@@ -44,7 +44,7 @@ class XimeaStereoGrabber:
         disp_fps = len(time_vec) / dt
         return fps, disp_fps
 
-    def grab(self, show_frame_id=True):
+    def grab(self, show_frame_id=True, ):
         frames = []
         sample_time = time.time()
         for side in self.cams.keys():
@@ -69,8 +69,8 @@ class XimeaStereoGrabber:
 
             if show_frame_id:
                 txt = f'Frame: {nframe}, fps: {fps:.2f}, display fps: {disp_fps:.2f}'
-                cv2.putText(img=data, text=txt, org=(150, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX,
-                            fontScale=3,
+                cv2.putText(img=data, text=txt, org=(100, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX,
+                            fontScale=1,
                             color=(0, 255, 0), thickness=3)
             frames.append(data)
         return frames

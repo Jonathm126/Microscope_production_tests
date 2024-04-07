@@ -17,9 +17,8 @@ from Thorlabs.MotionControl.GenericMotorCLI import *
 from Thorlabs.MotionControl.IntegratedStepperMotorsCLI import *
 from System import Decimal  # necessary for real world units
 
-
 class ThorlabsZStage:
-    def __init__(self, device_sn='49337854', max_velocity=10):
+    def __init__(self, device_sn='49337854', max_velocity=3):
         DeviceManagerCLI.BuildDeviceList()
 
         # Connect, begin polling, and enable
@@ -50,7 +49,7 @@ class ThorlabsZStage:
         vel_params.MaxVelocity = Decimal(max_velocity)  # This is a bad idea
         device.SetVelocityParams(vel_params)
 
-    def move_to(self, z, timeout=6000, rel=False):
+    def move_to(self, z, timeout=15000, rel=False):
         if rel:
             curr_pos = self.get_position()
             z = z + curr_pos
@@ -78,11 +77,12 @@ def main():
     stage = ThorlabsZStage()
     # stage.move_to(0)
     # stage.move_to(2, rel=True)
-    stage.move_to(-2, rel=True)
-    stage.move_to(1, rel=True)
-    stage.move_to(1, rel=True)
-    stage.move_to(-1, rel=True)
-    stage.move_to(-1, rel=True)
+    stage.move_to(-10, rel=True)
+    stage.move_to(10, rel=True)
+    stage.move_to(10, rel=True)
+    stage.move_to(-10, rel=True)
+    # stage.move_to(-1, rel=True)
+    # stage.move_to(-1, rel=True)
     print(stage.device.Position)
 
 

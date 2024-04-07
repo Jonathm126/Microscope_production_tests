@@ -32,6 +32,7 @@ class SequenceRunner:
         self.z_waypoints_rel = np.insert(np.diff(self.z_waypoints), 0, motion_params['min'])
         self.ind = 0
         self.loaded = False
+        self.num_waypoints = len(self.z_waypoints)
 
     def move_to_next_waypoint(self, stage):
         if self.ind < len(self.z_waypoints):
@@ -142,7 +143,12 @@ def main(args):
         show_frame_id = True
         while True:
             frame = ximea_grabber.grab(show_frame_id, rotate_180=args.rotate_180)
-
+            if sequence_runner.ind < sequence_runner.num_waypoints:
+                txt = (f'Step: {sequence_runner.ind+1}/{sequence_runner.num_waypoints}, '
+                       f'z: {sequence_runner.z_waypoints[sequence_runner.ind]:.2f}')
+                cv2.putText(img=frame, text=txt, org=(100, 100), fontFace=cv2.FONT_HERSHEY_TRIPLEX,
+                            fontScale=2,
+                            color=(0, 255, 0), thickness=3)
             # if frame is in RAW8 convert to BGR
             if 'RAW8' in cam_params['imgdataformat']:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BAYER_RG2BGR)
